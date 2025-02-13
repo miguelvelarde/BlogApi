@@ -1,0 +1,12 @@
+﻿global using AutoMapper;
+global using BlogApi.Data;
+global using BlogApi.Interfaces;
+global using BlogApi.Mappers;
+global using BlogApi.Models;
+global using BlogApi.Models.Dtos;
+global using BlogApi.Services;
+global using Microsoft.EntityFrameworkCore;
+global using System.ComponentModel.DataAnnotations;
+global using System.ComponentModel.DataAnnotations.Schema;
+global using System.Linq.Expressions;
+global using System.Net;
