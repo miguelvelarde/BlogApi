@@ -14,6 +14,4 @@ public class PostDtoCreate
     [Required(ErrorMessage = "This value is required.")]
     public string Tags { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-
 }

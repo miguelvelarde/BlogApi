@@ -1,6 +1,40 @@
 @BlogApi_HostAddress = http://localhost:5281
 
-GET http://localhost:5281/api/posts
+### Retrieve All Posts
+GET {{BlogApi_HostAddress}}/api/post
 Accept: application/json
 
-###
+### Retrieve Post by ID
+GET {{BlogApi_HostAddress}}/api/post/1
+Accept: application/json
+
+### Create a New Post
+POST {{BlogApi_HostAddress}}/api/post
+Content-Type: application/json
+
+{
+  "title": "New Post Title",
+  "content": "This is the content of the new post.",
+  "imagePath": "path/to/image.jpg",
+  "tags": "tag1, tag2",
+  "createdAt": "2023-10-01T00:00:00Z",
+  "updatedAt": "2023-10-01T00:00:00Z"
+}
+
+### Update an Existing Post
+PATCH {{BlogApi_HostAddress}}/api/post/1
+Content-Type: application/json
+
+{
+  "id": 1,
+  "title": "Updated Post Title",
+  "content": "This is the updated content of the post.",
+  "imagePath": "path/to/updated_image.jpg",
+  "tags": "updated_tag1, updated_tag2",
+  "createdAt": "2023-10-01T00:00:00Z",
+  "updatedAt": "2023-10-01T00:00:00Z"
+}
+
+### Delete a Post
+DELETE {{BlogApi_HostAddress}}/api/post/1
+Accept: application/json
