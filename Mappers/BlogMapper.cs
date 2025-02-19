@@ -11,9 +11,10 @@ public class BlogMapper : Profile
         CreateMap<User, UserDto>().ReverseMap();
         CreateMap<User, UserCreateDto>().ReverseMap();
         CreateMap<User, UserUpdateDto>().ReverseMap();
-        CreateMap<User, UserLoginResponseDto>();
 
         CreateMap<User, UserLoginResponseDto>()
-            .ForMember(dest => dest.Token, opt => opt.Ignore()); 
+            .ForMember(dest => dest.User, opt => opt.MapFrom(src => src)) // Mapea todo el objeto User
+            .ForMember(dest => dest.Token, opt => opt.Ignore()); // Ignora el Token (se asigna manualmente)
     }
 }
+

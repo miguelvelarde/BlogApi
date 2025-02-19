@@ -1,3 +1,6 @@
+using BlogApi.Configuration;
+using Microsoft.Extensions.Options;
+
 namespace BlogApi.Services;
 
 public class UserRepositoryService : IUserRepository
@@ -6,11 +9,11 @@ public class UserRepositoryService : IUserRepository
     private readonly IMapper _mapper;
     private readonly string _jwtSecret;
 
-    public UserRepositoryService(ApplicationDbContext context, IMapper mapper, IConfiguration configuration)
+    public UserRepositoryService(ApplicationDbContext context, IMapper mapper, IOptions<SecretsManager> configuration)
     {
         _context = context;
         _mapper = mapper;
-        _jwtSecret = configuration.GetValue<string>("JwtSettings:SecretKey");
+        _jwtSecret = configuration.Value.SecretKey;
     }
 
     public async Task<IEnumerable<UserDto>> GetAllAsync()
@@ -79,7 +82,9 @@ public class UserRepositoryService : IUserRepository
 
     public async Task<UserLoginResponseDto> Login(UserLoginDto userDto)
     {
-        var result = await _context.Users.FromSqlRaw("EXEC [dbo].[UsersLogin] @p0, @p1", userDto.NickName, TokenService.EncryptToMD5(userDto.Password)).ToListAsync();
+        var result = await _context.Users.FromSqlRaw("EXEC [dbo].[UsersLogin] @p0, @p1",
+            userDto.NickName, TokenService.EncryptToMD5(userDto.Password)).ToListAsync();
+
         var user = result.FirstOrDefault();
 
         if (user == null)
@@ -87,11 +92,12 @@ public class UserRepositoryService : IUserRepository
             return null;
         }
 
-        // Generate token
         var userLoginResponseDto = _mapper.Map<UserLoginResponseDto>(user);
+
         userLoginResponseDto.Token = TokenService.GenerateJwtToken(user, _jwtSecret);
 
         return userLoginResponseDto;
     }
+
 
 }
