@@ -1,5 +1,6 @@
 using BlogApi.Configuration;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -12,7 +13,7 @@ builder.Configuration.AddUserSecrets<Program>();
 // Bind JwtSettings (SecretsManager)
 builder.Services.Configure<SecretsManager>(builder.Configuration.GetSection("JwtSettings"));
 
-// Configuración directa de JWT Authentication
+// Configuraciï¿½n directa de JWT Authentication
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -34,7 +35,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 // Register DbContext
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"))
+    options.UseMySQL(builder.Configuration.GetConnectionString("DbConnection"))
 );
 
 // Register AutoMapper and repositories
@@ -81,7 +82,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection(); // Se recomienda agregar esta línea
+app.UseHttpsRedirection(); // Se recomienda agregar esta lï¿½nea
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
